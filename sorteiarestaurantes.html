@@ -1,0 +1,200 @@
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="theme-color" content="#337ab7" />
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<title>Sortear restaurante</title>
+<link
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+	rel="stylesheet" crossorigin="anonymous">
+<link
+	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+	rel="stylesheet" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+	crossorigin="anonymous"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+	crossorigin="anonymous"></script>
+<style type="text/css">
+#sobre {
+	position: fixed;
+	margin: 5px;
+	max-height: 20px;
+	width: 75%;
+}
+
+#sobre 	a {
+	float: right;
+}
+
+.jumbotron {
+	margin-top: 50px;
+}
+</style>
+</head>
+<body class="container">
+
+
+	<div id="sobre">
+		<a class="btn btn-primary btn-lg" href="#" role="button"
+			data-toggle="modal" data-target="#sobreModal"> <i
+			class="fa fa-info-circle" aria-hidden="true"></i>
+		</a>
+	</div>
+	<div class="jumbotron">
+		<h1 class="display-3">Sortear restaurante</h1>
+		<p class="lead">Página para decidir onde comer.</p>
+		<hr class="my-4">
+		<div class="card" id="#cardResultado" style="width: 20rem;">
+
+			<a class="btn btn-primary btn-lg" href="#" role="button"
+				onclick="javascript: sortear()"><i class="fa fa-random"
+				aria-hidden="true"></i></a>
+
+			<!-- Button trigger modal -->
+			<a class="btn btn-primary btn-lg" href="#" role="button"
+				data-toggle="modal" data-target="#exampleModal"
+				onclick="javascript:configurar()"> <i class="fa fa-gear"
+				aria-hidden="true"></i></a>
+			<div class="card-body">
+				<h4 class="card-title">Resultado:</h4>
+				<div>
+					<h3 id="resultado" class="text-success"></h3>
+				</div>
+
+
+
+				<hr />
+				<div class="card">
+					<div>
+						Opções Disponíveis:<br /> <small id="opcoes"></small>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+
+		<div id="configuracoes"></div>
+
+		<!-- Modal -->
+		<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+			aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h3 class="modal-title" id="exampleModalLabel">Cadastro
+							Restaurantes</h3>
+						<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<div class="form-group">
+							<label for="listaRestaurantes">Restaurantes</label> <input
+								type="text" class="form-control" id="listaRestaurantes">
+							<small class="form-text text-muted">Adicione os nomes
+								divididos por vírgula</small>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary"
+							data-dismiss="modal">Fechar</button>
+						<button type="button" class="btn btn-primary" data-dismiss="modal"
+							onclick="javascript:salvar()">Salvar</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Generated markup by the plugin -->
+		<div class="modal fade" id="sobreModal" tabindex="-1" role="dialog"
+			aria-labelledby="sobreModal" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h3 class="modal-title" id="exampleModalLabel">Sobre</h3>
+						<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<p>Sorteador de restaurantes</p>
+						<p>v1.0</p>
+						<p>
+							Desenvolvido por: <a
+								href="https://www.linkedin.com/in/leticiacsantin/"
+								target="_blank">Letícia C Santin</a>
+						</p>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+
+		<script type="text/javascript">
+	var LISTA_RESTAURANTE = "listaRestaurantes";
+	var restaurantes;
+	var divConfiguracoes = document.getElementById("configuracoes");
+	var divResultado = document.getElementById("resultado");
+	var listaRestaurantes = document.getElementById("listaRestaurantes");
+			/**
+			* INICILIZA AS VARIAVEIS A SEREM UTILIZADAS
+			**/
+			function inicializarVariaveis() {
+			/**
+			* verifica se possui a lista no local Storage
+			**/
+			restaurantes = localStorage.getItem(LISTA_RESTAURANTE);
+			if (restaurantes == undefined) {
+				//restaurantes default
+				restaurantes = ["Amais", "Chines", "Condor", "Cacau", "Casa amarela"];
+				localStorage.setItem(LISTA_RESTAURANTE,JSON.stringify(restaurantes));
+			}
+			else {
+				restaurantes = JSON.parse(restaurantes);
+			}
+			document.getElementById("opcoes").innerHTML = restaurantes.join("<br/>");
+		}
+
+
+		/**
+			SORTEIA O RESTAURANTE A PARTIR DA LISTA DE RESTAURANTES
+			**/
+			function sortear(){
+				if (restaurantes != undefined) {
+					var restaurante = restaurantes[Math.floor(Math.random()*restaurantes.length)];
+					divResultado.innerHTML = restaurante;
+				}
+			}
+
+			function configurar() {
+				listaRestaurantes.value = restaurantes;
+			}
+
+			function salvar() {
+				restaurantes = listaRestaurantes.value.split(',');
+				localStorage.setItem(LISTA_RESTAURANTE, JSON.stringify(restaurantes));
+				inicializarVariaveis();
+			}
+
+			
+			/**
+			* INICIALIZA TOOLTIP DO SOBRE
+			**/
+			$(function () {
+				$('[data-toggle="tooltip"]').tooltip()
+			});
+
+
+			inicializarVariaveis();
+		</script>
+</body>
+</html>
